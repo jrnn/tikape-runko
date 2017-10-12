@@ -17,7 +17,7 @@ public class Main {
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viesti", "tervehdys");
+            map.put("viesti", "Ding dong shämmä lämmä. Tykkäätteks skändinääveist ääkkösist mitä häh. Tykkäättekxs?!?!");
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());

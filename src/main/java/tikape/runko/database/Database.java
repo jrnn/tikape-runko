@@ -48,7 +48,7 @@ public class Database {
                 + "    raaka_aine_id integer,\n"
                 + "    annos_id integer,\n"
                 + "    jarjestys integer,\n"
-                + "    maara integer,\n"
+                + "    maara varchar(255),\n"
                 + "    ohje varchar(255),\n"
                 + "    FOREIGN KEY (raaka_aine_id) REFERENCES RaakaAine(id),\n"
                 + "    FOREIGN KEY (annos_id) REFERENCES Annos(id)\n"

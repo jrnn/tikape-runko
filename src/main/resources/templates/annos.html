@@ -11,8 +11,7 @@
     <h2 th:text="${annos.nimi}">Drinkin nimi</h2>
     <ul>
       <li th:each="a : ${aineet}">
-        <span th:text="${a.nimi}">Raaka-aine</span>,
-        <span th:text="${a.id}">Määrä</span>
+        <span th:text="${a}">toString-esitys</span>
       </li>
     </ul>
     </section>

@@ -1,6 +1,8 @@
 package tikape.runko;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -14,6 +16,7 @@ public class Main {
         db.init();
         AnnosDao annokset = new AnnosDao(db);
         RaakaAineDao aineet = new RaakaAineDao(db);
+        AnnosAineDao liitokset = new AnnosAineDao(db);
 
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -53,11 +56,35 @@ public class Main {
             return "";
         });
 
+        Spark.post("/lisaa", (req, res) -> {
+            try {
+                AnnosAine a = new AnnosAine(
+                        Integer.parseInt(req.queryParams("aine_id")),
+                        "",
+                        Integer.parseInt(req.queryParams("annos_id")),
+                        Integer.parseInt(req.queryParams("jarjestys")),
+                        req.queryParams("maara"),
+                        req.queryParams("ohje")
+                );
+                System.out.println(a);//debugging
+                liitokset.saveOrUpdate(a);
+            } catch (Exception e) {
+                //debugging
+                System.out.println("Jotain meni pieleen: " + e);
+                e.printStackTrace();
+            }
+
+            res.redirect("/annokset");
+            return "";
+        });
+
         Spark.get("/annokset/:id", (req, res) -> {
-            HashMap hm = new HashMap<>();
             Integer annosId = Integer.parseInt(req.params(":id"));
+            List<AnnosAine> a = setAineNimiForAll(liitokset.findAllFor(annosId), aineet.findAll());
+
+            HashMap hm = new HashMap<>();
             hm.put("annos", annokset.findOne(annosId));
-            hm.put("aineet", aineet.findAll());
+            hm.put("aineet", a);
 
             return new ModelAndView(hm, "annos");
         }, new ThymeleafTemplateEngine());
@@ -65,11 +92,30 @@ public class Main {
         Spark.post("/poista/:id", (req, res) -> {
             Integer annosId = Integer.parseInt(req.params(":id"));
             annokset.delete(annosId);
+            liitokset.deleteFor(annosId);
 
             res.redirect("/annokset");
             return "";
         });
 
+    }
+
+    // purukumiratkaisu jolla liitetään raaka-aineiden nimet liitostaulusta
+    // palautetulle otokselle
+    public static List<AnnosAine> setAineNimiForAll(List<AnnosAine> aa, List<RaakaAine> ra) {
+        for (AnnosAine a : aa) {
+            Integer aineId = a.getAineId();
+
+            for (RaakaAine r : ra) {
+                if (r.getId().equals(aineId)) {
+                    a.setAineNimi(r.getNimi());
+                }
+
+            }
+
+        }
+
+        return aa;
     }
 
 }

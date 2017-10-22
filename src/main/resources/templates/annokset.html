@@ -32,14 +32,23 @@
 
     <section>
       <h2>Lisää raaka-aineita</h2>
-      Drinkin nimi<br/>
-      <select name="annos_id">
-        <option th:each="a : ${annokset}" th:value="${a.id}" th:text="${a.nimi}">Annos</option>
-      </select><br/>
-      Lisättävä raaka-aine<br/>
-      <select name="aine_id">
-        <option th:each="a : ${aineet}" th:value="${a.id}" th:text="${a.nimi}">Raaka-aine</option>
-      </select><br/>
+      <form method="POST" action="/lisaa">
+        Drinkin nimi<br/>
+        <select name="annos_id">
+          <option th:each="a : ${annokset}" th:value="${a.id}" th:text="${a.nimi}">Annos</option>
+        </select><br/>
+        Lisättävä raaka-aine<br/>
+        <select name="aine_id">
+          <option th:each="a : ${aineet}" th:value="${a.id}" th:text="${a.nimi}">Raaka-aine</option>
+        </select><br/>
+        Järjestys<br/>
+        <input type="text" name="jarjestys"/><br/>
+        Määrä<br/>
+        <input type="text" name="maara"/><br/>
+        Ohje<br/>
+        <input type="text" name="ohje"/><br/>
+        <input type="submit" value="Lisää"/>
+      </form>
     </section>
 
   </body>

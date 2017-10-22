@@ -14,7 +14,6 @@ import java.util.List;
 import tikape.runko.domain.Opiskelija;
 
 public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
-
     private Database database;
 
     public OpiskelijaDao(Database database) {
@@ -70,6 +69,11 @@ public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
+    }
+
+    @Override
+    public Opiskelija saveOrUpdate(Opiskelija object) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

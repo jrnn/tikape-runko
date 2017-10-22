@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import tikape.runko.domain.AnnosAine;
 
@@ -61,6 +62,7 @@ public class AnnosAineDao implements Dao<AnnosAine, Integer> {
 
         }
 
+        Collections.sort(a);
         return a;
     }
 

@@ -2,7 +2,6 @@ package tikape.runko;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -69,9 +68,8 @@ public class Main {
                 System.out.println(a);//debugging
                 liitokset.saveOrUpdate(a);
             } catch (Exception e) {
-                //debugging
-                System.out.println("Jotain meni pieleen: " + e);
-                e.printStackTrace();
+                System.out.println("Jotain meni pieleen: " + e);//debugging
+                e.printStackTrace();//debugging
             }
 
             res.redirect("/annokset");
@@ -80,7 +78,10 @@ public class Main {
 
         Spark.get("/annokset/:id", (req, res) -> {
             Integer annosId = Integer.parseInt(req.params(":id"));
-            List<AnnosAine> a = setAineNimiForAll(liitokset.findAllFor(annosId), aineet.findAll());
+            List<AnnosAine> a = setAineNimiForAll(
+                    liitokset.findAllFor(annosId),
+                    aineet.findAll()
+            );
 
             HashMap hm = new HashMap<>();
             hm.put("annos", annokset.findOne(annosId));
@@ -100,7 +101,7 @@ public class Main {
 
     }
 
-    // purukumiratkaisu jolla liitetään raaka-aineiden nimet liitostaulusta
+    // Purukumiratkaisu jolla liitetään raaka-aineiden nimet liitostaulusta
     // palautetulle otokselle
     public static List<AnnosAine> setAineNimiForAll(List<AnnosAine> aa, List<RaakaAine> ra) {
         for (AnnosAine a : aa) {

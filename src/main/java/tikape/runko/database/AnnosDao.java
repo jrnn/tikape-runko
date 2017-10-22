@@ -1,5 +1,3 @@
-// MAHD LISÄYS: findAll() palauttaa aakkosjärjestyksessä
-
 package tikape.runko.database;
 
 import java.sql.Connection;
@@ -7,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import tikape.runko.domain.Annos;
 
@@ -68,6 +67,7 @@ public class AnnosDao implements Dao<Annos, Integer> {
 
         }
 
+        Collections.sort(a);
         return a;
     }
 

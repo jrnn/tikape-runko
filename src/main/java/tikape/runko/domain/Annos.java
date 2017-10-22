@@ -1,6 +1,6 @@
 package tikape.runko.domain;
 
-public class Annos {
+public class Annos implements Comparable<Annos> {
     private final Integer id;
     private final String nimi;
 
@@ -15,6 +15,11 @@ public class Annos {
 
     public String getNimi() {
         return this.nimi;
+    }
+
+    @Override
+    public int compareTo(Annos o) {
+        return this.getNimi().compareToIgnoreCase(o.getNimi());
     }
 
 }

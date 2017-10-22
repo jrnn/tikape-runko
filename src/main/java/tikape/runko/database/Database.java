@@ -1,49 +1,60 @@
 package tikape.runko.database;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Database {
+    private final String dbAddress;
 
-    private String databaseAddress;
-
-    public Database(String databaseAddress) throws ClassNotFoundException {
-        this.databaseAddress = databaseAddress;
+    public Database(String dbAddress) throws ClassNotFoundException {
+        this.dbAddress = dbAddress;
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(databaseAddress);
+        return DriverManager.getConnection(this.dbAddress);
     }
 
     public void init() {
-        List<String> lauseet = sqliteLauseet();
+        ArrayList<String> lauseet = sqliteLauseet();
 
-        // "try with resources" sulkee resurssin automaattisesti lopuksi
-        try (Connection conn = getConnection()) {
-            Statement st = conn.createStatement();
+        try (Connection co = this.getConnection()) {
+            Statement st = co.createStatement();
 
-            // suoritetaan komennot
-            for (String lause : lauseet) {
-                System.out.println("Running command >> " + lause);
-                st.executeUpdate(lause);
+            for (String l : lauseet) {
+                System.out.println("Running command >> " + l);
+                st.executeUpdate(l);
             }
-
         } catch (Throwable t) {
-            // jos tietokantataulu on jo olemassa, ei komentoja suoriteta
             System.out.println("Error >> " + t.getMessage());
         }
+
     }
 
-    private List<String> sqliteLauseet() {
-        ArrayList<String> lista = new ArrayList<>();
+    private ArrayList<String> sqliteLauseet() {
+        ArrayList<String> l = new ArrayList<>();
 
-        // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
+        l.add("CREATE TABLE Annos (\n"
+                + "    id integer PRIMARY KEY,\n"
+                + "    nimi varchar(255)\n"
+                + ");");
+        l.add("CREATE TABLE RaakaAine (\n"
+                + "    id integer PRIMARY KEY,\n"
+                + "    nimi varchar(255)\n"
+                + ");");
+        l.add("CREATE TABLE AnnosRaakaAine (\n"
+                + "    raaka_aine_id integer,\n"
+                + "    annos_id integer,\n"
+                + "    jarjestys integer,\n"
+                + "    maara integer,\n"
+                + "    ohje varchar(255),\n"
+                + "    FOREIGN KEY (raaka_aine_id) REFERENCES RaakaAine(id),\n"
+                + "    FOREIGN KEY (annos_id) REFERENCES Annos(id)\n"
+                + ");");
 
-        return lista;
+        return l;
     }
+
 }

@@ -4,16 +4,14 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import tikape.runko.database.Database;
-import tikape.runko.database.OpiskelijaDao;
+import tikape.runko.database.*;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("jdbc:sqlite:opiskelijat.db");
-        database.init();
-
-        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
+        Database db = new Database("jdbc:sqlite:opiskelijat.db");
+        db.init();
+        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(db);
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -35,5 +33,7 @@ public class Main {
 
             return new ModelAndView(map, "opiskelija");
         }, new ThymeleafTemplateEngine());
+
     }
+
 }

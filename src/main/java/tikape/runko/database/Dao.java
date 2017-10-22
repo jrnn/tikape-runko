@@ -1,7 +1,7 @@
 package tikape.runko.database;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.SQLException;
+import java.util.List;
 
 public interface Dao<T, K> {
 
@@ -10,4 +10,5 @@ public interface Dao<T, K> {
     List<T> findAll() throws SQLException;
 
     void delete(K key) throws SQLException;
+
 }

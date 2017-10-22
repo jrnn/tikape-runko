@@ -38,6 +38,29 @@ public class Main {
             return "";
         });
 
+        Spark.get("/annokset", (req, res) -> {
+            HashMap hm = new HashMap<>();
+            hm.put("annokset", annokset.findAll());
+
+            return new ModelAndView(hm, "annokset");
+        }, new ThymeleafTemplateEngine());
+
+        Spark.post("/annokset", (req, res) -> {
+            Annos a = new Annos(-1, req.queryParams("nimi"));
+            annokset.saveOrUpdate(a);
+
+            res.redirect("/annokset");
+            return "";
+        });
+
+        Spark.post("/poista/:id", (req, res) -> {
+            Integer annosId = Integer.parseInt(req.params(":id"));
+            annokset.delete(annosId);
+
+            res.redirect("/annokset");
+            return "";
+        });
+
         Spark.get("/opiskelijat", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("opiskelijat", opiskelijaDao.findAll());

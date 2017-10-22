@@ -1,3 +1,5 @@
+// MAHD LISÄYS: findAll() palauttaa aakkosjärjestyksessä
+
 package tikape.runko.database;
 
 import java.sql.Connection;

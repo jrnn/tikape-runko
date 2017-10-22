@@ -9,7 +9,6 @@
   <body>
     <section>
     <h2>Drinkit</h2>
-
     <ul>
       <li th:each="a : ${annokset}">
         <form th:action="@{~/poista/{id}(id=${a.id})}" method="post">
@@ -24,11 +23,24 @@
 
     <section>
     <h2>Lisää uusi drinkki</h2>
-
+    Drinkin nimi<br/>
     <form method="POST" action="/annokset">
       <input type="text" name="nimi"/><br/>
       <input type="submit" value="Lisää"/>
     </form>
     </section>
+
+    <section>
+      <h2>Lisää raaka-aineita</h2>
+      Drinkin nimi<br/>
+      <select name="annos_id">
+        <option th:each="a : ${annokset}" th:value="${a.id}" th:text="${a.nimi}">Annos</option>
+      </select><br/>
+      Lisättävä raaka-aine<br/>
+      <select name="aine_id">
+        <option th:each="a : ${aineet}" th:value="${a.id}" th:text="${a.nimi}">Raaka-aine</option>
+      </select><br/>
+    </section>
+
   </body>
 </html>

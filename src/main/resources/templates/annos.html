@@ -2,27 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
   <head>
-    <title>Raaka-aineet</title>
+    <title th:text="${annos.nimi}">Drinkin nimi</title>
     <meta charset="utf-8" />
   </head>
 
   <body>
     <section>
-    <h2>Raaka-aineet</h2>
+    <h2 th:text="${annos.nimi}">Drinkin nimi</h2>
     <ul>
       <li th:each="a : ${aineet}">
-        <span th:text="${a.nimi}">Raaka-aine</span>
+        <span th:text="${a.nimi}">Raaka-aine</span>,
+        <span th:text="${a.id}">Määrä</span>
       </li>
     </ul>
     </section>
 
     <section>
-    <h2>Lisää uusi raaka-aine</h2>
-    Raaka-aineen nimi<br/>
-    <form method="POST" action="/aineet">
-      <input type="text" name="nimi"/><br/>
-      <input type="submit" value="Lisää"/>
-    </form>
+        
     </section>
   </body>
 </html>

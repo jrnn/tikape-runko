@@ -25,7 +25,10 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
             ps.setInt(1, key);
 
             try (ResultSet rs = ps.executeQuery()) {
-                rs.next();
+                if (!rs.next()) {
+                    return null;
+                }
+
                 return this.create(rs);
             }
 
@@ -67,6 +70,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
 
         }
 
+        // Listataan aakkosjärjestyksessä selkeyden vuoksi
         Collections.sort(r);
         return r;
     }
@@ -74,8 +78,11 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     @Override
     public RaakaAine saveOrUpdate(RaakaAine object) throws SQLException {
         String nimi = object.getNimi();
-        RaakaAine r = this.findByName(nimi);
+        if (nimi.isEmpty()) {
+            return null;    // Hylätään nimettömät raaka-aineet
+        }
 
+        RaakaAine r = this.findByName(nimi);
         if (r != null) {
             return r;
         }
@@ -103,6 +110,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
 
     }
 
+    // Luo ResultSetin rivistä RaakaAine-olion
     private RaakaAine create(ResultSet rs) throws SQLException {
         return new RaakaAine(rs.getInt("id"), rs.getString("nimi"));
     }

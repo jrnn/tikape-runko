@@ -1,16 +1,22 @@
+// Toisin kuin liitostaulussa, luokka sisältää myös tiedon raaka-aineen nimestä.
+// Tämä helpottaa drinkkikohtaisten ainesten listaamista. Oliota vastaava Dao-luokka
+// ohittaa tämän attribuutin kokonaan, koska se ei tietokannan kanssa keskusteltaessa
+// ole oleellinen. Raaka-aineiden nimet täytetään vain, kun drinkkikohtainen sivu
+// avataan (ks. "purukumiratkaisu" Main-luokan lopussa).
+
 package tikape.runko.domain;
 
 public class AnnosAine implements Comparable<AnnosAine> {
     private final Integer aineId;
-    private String aineNimi;
+    private String aineNimi; // <--Tämä on se kummajainen jota yllä kommentoidaan.
     private final Integer annosId;
     private final Integer jarjestys;
     private final String maara;
     private final String ohje;
 
-    public AnnosAine(Integer aineId, String aineNimi, Integer annosId, Integer jarjestys, String maara, String ohje) {
+    public AnnosAine(Integer aineId, Integer annosId, Integer jarjestys, String maara, String ohje) {
         this.aineId = aineId;
-        this.aineNimi = aineNimi;
+        this.aineNimi = "";
         this.annosId = annosId;
         this.jarjestys = jarjestys;
         this.maara = maara;
@@ -45,7 +51,7 @@ public class AnnosAine implements Comparable<AnnosAine> {
         return this.ohje;
     }
 
-    @Override
+    @Override // Merkkijonoesitystä käytetään annos.html-sivulle tulostettaessa
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.aineNimi).append(", ").append(this.maara);
@@ -57,7 +63,7 @@ public class AnnosAine implements Comparable<AnnosAine> {
         return sb.toString();
     }
 
-    @Override
+    @Override // AnnosAineet järjestetään annetun "jarjestys"-luvun mukaan
     public int compareTo(AnnosAine o) {
         return this.jarjestys - o.getJarjestys();
     }

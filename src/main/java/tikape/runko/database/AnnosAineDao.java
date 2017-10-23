@@ -18,7 +18,7 @@ public class AnnosAineDao implements Dao<AnnosAine, Integer> {
 
     @Override
     public AnnosAine findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not applicable.");
+        throw new UnsupportedOperationException("Not applicable."); // Ei haettavissa yhdellä avaimella
     }
 
     public AnnosAine findOne(Integer aineId, Integer annosId) throws SQLException {
@@ -43,7 +43,7 @@ public class AnnosAineDao implements Dao<AnnosAine, Integer> {
 
     @Override
     public List<AnnosAine> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not applicable.");
+        throw new UnsupportedOperationException("Not applicable."); // Ei tarpeen
     }
 
     public List<AnnosAine> findAllFor(Integer annosId) throws SQLException {
@@ -62,6 +62,7 @@ public class AnnosAineDao implements Dao<AnnosAine, Integer> {
 
         }
 
+        // Listataan määritellyn järjestyksen mukaan
         Collections.sort(a);
         return a;
     }
@@ -94,7 +95,7 @@ public class AnnosAineDao implements Dao<AnnosAine, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not applicable.");
+        throw new UnsupportedOperationException("Not applicable."); // Ei yksilöivää avainta
     }
 
     public void delete(Integer aineId, Integer annosId) throws SQLException {
@@ -109,6 +110,9 @@ public class AnnosAineDao implements Dao<AnnosAine, Integer> {
 
     }
 
+    // Drinkin poistamisen yhteydessä pyyhitään myös siihen liittyvät rivit
+    // liitostaulusta siltä varalta, että tietokannanhallintajärjestelmä
+    // kierrättää poistettujen drinkkien pääavaimia.
     public void deleteFor(Integer annosId) throws SQLException {
         try (Connection co = this.db.getConnection()) {
             PreparedStatement ps = co.prepareStatement(
@@ -120,10 +124,10 @@ public class AnnosAineDao implements Dao<AnnosAine, Integer> {
 
     }
 
+    // Luo ResultSetin rivistä AnnosAine-olion
     private AnnosAine create(ResultSet rs) throws SQLException {
         return new AnnosAine(
                 rs.getInt("raaka_aine_id"),
-                "",
                 rs.getInt("annos_id"),
                 rs.getInt("jarjestys"),
                 rs.getString("maara"),

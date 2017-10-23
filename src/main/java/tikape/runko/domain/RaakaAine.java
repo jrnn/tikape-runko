@@ -17,7 +17,7 @@ public class RaakaAine implements Comparable<RaakaAine> {
         return this.nimi;
     }
 
-    @Override
+    @Override // Raaka-aineet järjestetään aakkosellisesti nimen mukaan
     public int compareTo(RaakaAine o) {
         return this.getNimi().compareToIgnoreCase(o.getNimi());
     }

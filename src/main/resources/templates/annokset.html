@@ -7,27 +7,28 @@
   </head>
 
   <body>
+
     <section>
-    <h2>Drinkit</h2>
-    <ul>
-      <li th:each="a : ${annokset}">
-        <form th:action="@{~/poista/{id}(id=${a.id})}" method="post">
-          <a th:href="@{~/annokset/{id}(id=${a.id})}">
-            <span th:text="${a.nimi}">Drinkki</span>
-          </a>
-          <input type="submit" value="Poista"/>
-        </form>
-      </li>
-    </ul>
+      <h2>Drinkit</h2>
+      <ul>
+        <li th:each="a : ${annokset}">
+          <form th:action="@{~/poista/{id}(id=${a.id})}" method="post">
+            <a th:href="@{~/annokset/{id}(id=${a.id})}">
+              <span th:text="${a.nimi}">Drinkki</span>
+            </a>
+            <input type="submit" value="Poista"/>
+          </form>
+        </li>
+      </ul>
     </section>
 
     <section>
-    <h2>Lisää uusi drinkki</h2>
-    Drinkin nimi<br/>
-    <form method="POST" action="/annokset">
-      <input type="text" name="nimi"/><br/>
-      <input type="submit" value="Lisää"/>
-    </form>
+      <h2>Lisää uusi drinkki</h2>
+      Drinkin nimi<br/>
+      <form method="POST" action="/annokset">
+        <input type="text" name="nimi"/><br/>
+        <input type="submit" value="Lisää"/>
+      </form>
     </section>
 
     <section>
@@ -49,6 +50,14 @@
         <input type="text" name="ohje"/><br/>
         <input type="submit" value="Lisää"/>
       </form>
+    </section>
+
+    <section>
+      <ul>
+        <li>
+          <a href="../">Takaisin drinkkilistaukseen</a>
+        </li>
+      </ul>
     </section>
 
   </body>

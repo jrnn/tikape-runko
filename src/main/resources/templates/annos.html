@@ -7,17 +7,23 @@
   </head>
 
   <body>
+
     <section>
-    <h2 th:text="${annos.nimi}">Drinkin nimi</h2>
-    <ul>
-      <li th:each="a : ${aineet}">
-        <span th:text="${a}">toString-esitys</span>
-      </li>
-    </ul>
+      <h2 th:text="${annos.nimi}">Drinkin nimi</h2>
+      <ul>
+        <li th:each="a : ${aineet}">
+          <span th:text="${a}">toString-esitys</span>
+        </li>
+      </ul>
     </section>
 
     <section>
-        
+      <ul>
+        <li>
+          <a href="../">Takaisin drinkkilistaukseen</a>
+        </li>
+      </ul>
     </section>
+
   </body>
 </html>

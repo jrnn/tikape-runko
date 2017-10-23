@@ -25,7 +25,10 @@ public class AnnosDao implements Dao<Annos, Integer> {
             ps.setInt(1, key);
 
             try (ResultSet rs = ps.executeQuery()) {
-                rs.next();
+                if (!rs.next()) {
+                    return null;
+                }
+
                 return this.create(rs);
             }
 
@@ -67,6 +70,7 @@ public class AnnosDao implements Dao<Annos, Integer> {
 
         }
 
+        // Listataan aakkosjärjestyksessä selkeyden vuoksi
         Collections.sort(a);
         return a;
     }
@@ -74,8 +78,11 @@ public class AnnosDao implements Dao<Annos, Integer> {
     @Override
     public Annos saveOrUpdate(Annos object) throws SQLException {
         String nimi = object.getNimi();
-        Annos a = this.findByName(nimi);
+        if (nimi.isEmpty()) {
+            return null;    // Hylätään nimettömät annokset
+        }
 
+        Annos a = this.findByName(nimi);
         if (a != null) {
             return a;
         }
@@ -103,6 +110,7 @@ public class AnnosDao implements Dao<Annos, Integer> {
 
     }
 
+    // Luo ResultSetin rivistä Annos-olion
     private Annos create(ResultSet rs) throws SQLException {
         return new Annos(rs.getInt("id"), rs.getString("nimi"));
     }

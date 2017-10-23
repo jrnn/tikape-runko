@@ -17,7 +17,7 @@ public class Annos implements Comparable<Annos> {
         return this.nimi;
     }
 
-    @Override
+    @Override // Annokset järjestetään aakkosellisesti nimen mukaan
     public int compareTo(Annos o) {
         return this.getNimi().compareToIgnoreCase(o.getNimi());
     }

@@ -18,10 +18,10 @@ public class Main {
         AnnosAineDao liitokset = new AnnosAineDao(db);
 
         Spark.get("/", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("viesti", "Ding dong shämmä lämmä. Tykkäätteks skändinääveist ääkkösist mitä häh. Tykkäättekxs?!?!");
+            HashMap hm = new HashMap<>();
+            hm.put("annokset", annokset.findAll());
 
-            return new ModelAndView(map, "index");
+            return new ModelAndView(hm, "index");
         }, new ThymeleafTemplateEngine());
 
         Spark.get("/aineet", (req, res) -> {
@@ -56,20 +56,21 @@ public class Main {
         });
 
         Spark.post("/lisaa", (req, res) -> {
+            // Hylätään kelvottomat tai puutteelliset syötteet jo tässä kohtaa
+            // try-catch -rakenteella. Ikävä kyllä käyttäjä ei saa mitään
+            // kuittausta siitä, onnistuiko lisäys vai ei.
             try {
                 AnnosAine a = new AnnosAine(
                         Integer.parseInt(req.queryParams("aine_id")),
-                        "",
                         Integer.parseInt(req.queryParams("annos_id")),
                         Integer.parseInt(req.queryParams("jarjestys")),
                         req.queryParams("maara"),
                         req.queryParams("ohje")
                 );
-                System.out.println(a);//debugging
+
                 liitokset.saveOrUpdate(a);
             } catch (Exception e) {
-                System.out.println("Jotain meni pieleen: " + e);//debugging
-                e.printStackTrace();//debugging
+                e.printStackTrace();
             }
 
             res.redirect("/annokset");
@@ -81,7 +82,7 @@ public class Main {
             List<AnnosAine> a = setAineNimiForAll(
                     liitokset.findAllFor(annosId),
                     aineet.findAll()
-            );
+            ); // Liitetään drinkin raaka-aineisiin nimet
 
             HashMap hm = new HashMap<>();
             hm.put("annos", annokset.findOne(annosId));
@@ -102,7 +103,8 @@ public class Main {
     }
 
     // Purukumiratkaisu jolla liitetään raaka-aineiden nimet liitostaulusta
-    // palautetulle otokselle
+    // palautetulle otokselle (käytetään vain sivulla annos.html, joka listaa
+    // yksittäisen drinkin ainesosat).
     public static List<AnnosAine> setAineNimiForAll(List<AnnosAine> aa, List<RaakaAine> ra) {
         for (AnnosAine a : aa) {
             Integer aineId = a.getAineId();
